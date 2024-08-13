@@ -35,14 +35,17 @@ public class OrderItem {
     }
 
     public double subTotal(){
-        price = product.getPrice() * quantity;
-        return price;
+        return price * quantity;
     }
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(product.getName()).append(",").append(product.getPrice()).append(",").append(quantity).append(",").
-                append(subTotal());
-        return sb.toString();
+        return getProduct().getName()
+                + ", $"
+                + String.format("%.2f",price)
+                + ", Quantity: "
+                + quantity
+                + ", Subtotal: $"
+                + String.format("%.2f",subTotal());
+
     }
 }

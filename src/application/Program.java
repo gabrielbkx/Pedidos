@@ -4,6 +4,7 @@ import entities.Order;
 import entities.OrderItem;
 import entities.Product;
 import entities.enums.OrderStatus;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -18,48 +19,48 @@ public class Program {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
         Date now = Date.from(Instant.now());
 
-        // Dados do cliente
-        System.out.println("Enter client data: ");
+        // Coleata de dados para a criação do objeto cliente
+        System.out.println("Enter client data");
         System.out.print("Name: ");
         String name = sc.nextLine();
-        System.out.print("Email: ");
+        System.out.print("Email:");
         String email = sc.nextLine();
         System.out.print("Birth date (DD/MM/YYYY): ");
-        Date date = sdf.parse(sc.next());
-        Client c = new Client(name, email, date);
-        sc.nextLine();
+        Date birthDate = sdf.parse(sc.next());
 
-        // Dados do produto1
+        Client c = new Client(name, email, birthDate);
+
         System.out.println("Enter order data ");
         System.out.print("Status: ");
-        String status = sc.nextLine();
-        System.out.print("How many itens for this order?: ");
+        OrderStatus status = OrderStatus.valueOf(sc.next());
+
+        Order order = new Order(new Date(),c,status);
+
+        System.out.print("How many items to this order?: ");
         int n = sc.nextInt();
-        sc.nextLine();
 
-        Order order = new Order(now, c, OrderStatus.valueOf(status));
-
-        // Dados do produto2
-        for (int m = 0; m < n; m++) {
-            System.out.println("Enter #" + (m + 1) + " item data: ");
+        //Coleta de dados para a criaçao do objeto produto/product
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter #" + (1 + i) + " item data:");
             System.out.print("Product name: ");
+            sc.nextLine();
             String productName = sc.nextLine();
             System.out.print("Product price: ");
             double productPrice = sc.nextDouble();
-            System.out.print("Product quantity: ");
-            int productQuantity = sc.nextInt();
-            sc.nextLine();
 
-            Product p = new Product(productPrice, productName, productQuantity);
-            OrderItem o = new OrderItem(p, p.getPrice(), productQuantity);
-            order.addItem(o);
+            Product product = new Product(productPrice, productName);
+
+            System.out.print("Quantity: ");
+            int quantity = sc.nextInt();
+
+            OrderItem orderItem = new OrderItem(product, productPrice, quantity);
+
+            order.addItem(orderItem);
         }
 
-        System.out.println("ORDER SUMMARY: ");
-        System.out.println("Order moment: " + order.getMoment());
-        System.out.println("Order status: " + order.getStatus());
-        System.out.println("Client data: " + c);
-        System.out.println("Order itenm: ");
+        System.out.println("ORDER SUMMARY ");
+        System.out.println(order);
+
 
         sc.close();
     }
